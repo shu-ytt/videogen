@@ -229,7 +229,22 @@ const LTX_GENERATE_AUDIO_INPUT = Object.freeze({
 
 export const t2iModels = [
   {
-    "id": "nano-banana",
+     {
+    "id": "flux-schnell-rep",
+    "name": "Flux Schnell (Replicate)",
+    "replicateModel": "black-forest-labs/flux-schnell",
+    "inputs": {
+      "prompt": {
+        "description": "Text prompt describing the image you want to generate.",
+        "type": "string",
+        "title": "Prompt",
+        "name": "prompt"
+      }
+    },
+    "provider": "replicate",
+    "provider_name": "Replicate"
+  },
+  "id": "nano-banana",
     "name": "Nano Banana",
     "endpoint": "nano-banana",
     "inputs": {
