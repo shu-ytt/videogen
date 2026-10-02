@@ -229,7 +229,6 @@ const LTX_GENERATE_AUDIO_INPUT = Object.freeze({
 
 export const t2iModels = [
   {
-     {
     "id": "flux-schnell-rep",
     "name": "Flux Schnell (Replicate)",
     "replicateModel": "black-forest-labs/flux-schnell",
