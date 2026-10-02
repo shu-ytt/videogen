@@ -66,15 +66,22 @@ export class MuapiClient {
             finalPayload.seed = params.seed;
         }
 
-        if (params.model === 'flux-schnell') {
-            const res = await fetch('/api/replicate/image', {
+               if (modelInfo?.provider === 'replicate') {
+            const createRes = await fetch('/api/replicate/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: params.prompt })
+                body: JSON.stringify({ model: modelInfo.replicateModel, input: { prompt: params.prompt } })
             });
-            const data = await res.json();
-            const imageUrl = data.output?.[0] || data.output;
-            return { ...data, url: imageUrl };
+            const job = await createRes.json();
+            let result = job;
+            for (let i = 0; i < 60; i++) {
+                if (['succeeded', 'failed', 'canceled'].includes(result.status)) break;
+                await new Promise(r => setTimeout(r, 1500));
+                const statusRes = await fetch('/api/replicate/status?id=' + job.id);
+                result = await statusRes.json();
+            }
+            const imageUrl = Array.isArray(result.output) ? result.output[0] : result.output;
+            return { ...result, url: imageUrl };
         }
 
         console.log('[Muapi] Requesting:', url);
