@@ -1,13 +1,13 @@
 export default async (req) => {
-  const { prompt } = await req.json();
+  const { model, input } = await req.json();
 
-  const res = await fetch("https://api.replicate.com/v1/models/minimax/video-01/predictions", {
+  const res = await fetch(`https://api.replicate.com/v1/models/${model}/predictions`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${process.env.REPLICATE_API_TOKEN}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ input: { prompt } }),
+    body: JSON.stringify({ input }),
   });
 
   const data = await res.json();
